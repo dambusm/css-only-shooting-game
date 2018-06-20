@@ -5,40 +5,106 @@ body {
 
 @keyframes slide {
   0% {
-    left: 0;
-    top: 0;
+    left: 500px;
+    top: 50px;
+  }
+  10% {
+    left: 350px;
+    top: 60px;
+    transform: rotate(45deg);
+  }
+  20% {
+    left: 250px;
+    top: 120px;
+    transform: rotate(0deg);
+  }
+  30% {
+    left: 350px;
+    top: 280px;
+    transform: rotate(180deg);
   }
   50% {
-    left: 450px;
-    top: 100px;
+    left: 120px;
+    top: 260px;
+    transform: rotate(360deg);
+  }
+  60% {
+    left: 280px;
+    top: 120px;
+    transform: rotate(45deg);
+  }
+  70% {
+    left: 400px;
+    top: 400px;
+    transform: rotate(0deg);
+  }
+  80% {
+    left: 100px;
+    top: 240px;
+    transform: rotate(93deg);
+  }
+  90% {
+    left: 30px;
+    top: 40px;
+    transform: rotate(164deg);
   }
   100% {
-    left: 0px;
-    top: 450px;
+    left: -50px;
+    top: 400px;
+  }
+}
+
+@keyframes appear {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }
 
 @keyframes disappear {
   0% {
     opacity: 1;
-    transform-origin: 50% 50%;
-    transform: scale(1, 1);
-    filter: blur(0px);
   }
-
   100% {
     opacity: 0;
-    transform-origin: 50% 50%;
-    transform: scale(2, 2);
-    filter: blur(20px);
   }
+}
+
+.wall {
+  background-color: pink;
+  width: 100px;
+  height: 500px;
+  float: left;
+  overflow: hidden;
+  z-index: 1;
 }
 .stage {
   background: #eaeaed;
-  border-radius: 6px;
   height: 500px;
   position: relative;
   width: 500px;
+  float: left;
+  overflow: hidden;
+  z-index: -1;
+}
+
+/* You need pointer-events: none to avoid the divs taking click events, preventing you clicking the boxes underneath them. */
+.your-score {
+  padding-left: 20px;
+  animation: disappear 0.5s forwards;
+  animation-delay: 12s;
+  pointer-events: none;
+}
+
+.game-over {
+  width: 500px;
+  opacity: 0;
+  animation: appear 0.5s forwards;
+  animation-delay: 12s;
+  text-align: center;
+  pointer-events: none;
 }
 
 .target {
@@ -46,7 +112,7 @@ body {
   height: 100%;
 }
 
-/* Checkboxes are used for the targets. They cover their parent element, but are set to opacity 0 to hide them. */
+/* Checkboxes with labels are used for the targets. */
 .stage input[type="checkbox"] {
   height: 0px;
   width: 0px;
@@ -58,8 +124,9 @@ body {
 li {
   height: 50px;
   position: absolute;
+  left: -50px;
   width: 50px;
-  animation: slide 2s alternate-reverse infinite;
+  animation: slide 8s alternate;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -69,13 +136,14 @@ label div {
   background-color: green;
   height: 100%;
   width: 100%;
-  transition: background-color 0.5s ease-out;
-  transition: filter 1s ease-out;
+  /* transition: background-color 0.5s ease-out; */
+  transition: all 1s ease-out;
 }
 
 input[type="checkbox"]:checked + label div {
   background-color: red;
-  filter: blur(100px) opacity(0);
+  filter: opacity(0);
+  height: 1px;
 }
 
 li:nth-of-type(2) {
@@ -83,15 +151,33 @@ li:nth-of-type(2) {
 }
 
 li:nth-of-type(3) {
-  animation-delay: 2.5s;
+  animation-delay: 2.3s;
+}
+
+li:nth-of-type(4) {
+  animation-delay: 3.7s;
+}
+
+li:nth-of-type(5) {
+  animation-delay: 4.1s;
+}
+
+li:nth-of-type(6) {
+  animation-delay: 4.9s;
 }
 
 /* Increment the counter by 1 for every checkbox which is checked */
 input[type="checkbox"]:checked {
   counter-increment: score;
+  /* Note: pointer-events: none isn't working here, checkboxes can still be clicked after they're checked. Not sure why. */
+  pointer-events: none;
 }
 
 /* Insert the counter value after the score h1 element string, which is initially empty. */
 .your-score::after {
+  content: counter(score);
+}
+
+#game-over-score::after {
   content: counter(score);
 }
