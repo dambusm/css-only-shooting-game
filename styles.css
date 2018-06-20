@@ -1,0 +1,65 @@
+/* counter-reset creates a counter that we can increment, decrement and access the value of */
+body {
+  counter-reset: score;
+}
+
+@keyframes slide {
+  0% {
+    left: 0;
+    top: 0;
+  }
+  50% {
+    left: 450px;
+    top: 100px;
+  }
+  100% {
+    left: 0px;
+    top: 450px;
+  }
+}
+.stage {
+  background: #eaeaed;
+  border-radius: 6px;
+  height: 500px;
+  position: relative;
+  width: 500px;
+}
+
+.target {
+  width: 100%;
+  height: 100%;
+}
+
+/* Checkboxes are used for the targets. They cover their parent element, but are set to opacity 0 to hide them. */
+.stage input[type="checkbox"] {
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+}
+
+li {
+  height: 50px;
+  position: absolute;
+  width: 50px;
+  animation: slide 2s alternate-reverse infinite;
+  background-color: blue;
+  list-style: none;
+}
+
+li:nth-of-type(2) {
+  animation-delay: 1.5s;
+}
+
+li:nth-of-type(3) {
+  animation-delay: 2.5s;
+}
+
+/* Increment the counter by 1 for every checkbox which is checked */
+input[type="checkbox"]:checked {
+  counter-increment: score;
+}
+
+/* Insert the counter value after the score h1 element string, which is initially empty. */
+.your-score::after {
+  content: counter(score);
+}
